@@ -4,7 +4,25 @@ import java.util.Scanner;
 
 public class PascalsTriangle {
 
-    static void displayTriangle() {
+    static void chooseSolution() {
+        Scanner scan = new Scanner(System.in);
+        System.out.println("""
+                Choose which solution you'd like to run:\s
+                1. Integer Input
+                2. Array Input
+                3. List Input""");
+
+        int choice = scan.nextInt();
+
+        switch (choice) {
+            case 1 -> displayTriangleSolution1();
+            case 2 -> displayTriangleSolution2();
+            case 3 -> displayTriangleSolution3();
+            default -> System.out.println("Invalid choice!");
+        }
+    }
+
+    static void displayTriangleSolution1() {
         Scanner scan = new Scanner(System.in);
         System.out.println("How many rows would you like to display?: ");
 
@@ -51,5 +69,15 @@ public class PascalsTriangle {
             // next line
             System.out.println();
         }
+    }
+
+    static void displayTriangleSolution2() {
+        System.out.println("Placeholder");
+        int[][] entries;
+    }
+
+    static void displayTriangleSolution3() {
+        System.out.println("Placeholder");
+        List<List<Integer>> entries = new ArrayList<>();
     }
 }
