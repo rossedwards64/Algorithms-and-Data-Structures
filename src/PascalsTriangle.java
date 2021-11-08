@@ -1,26 +1,7 @@
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Arrays;
 import java.util.Scanner;
 
 public class PascalsTriangle {
-
-    static void chooseSolution() {
-        Scanner scan = new Scanner(System.in);
-        System.out.println("""
-                Choose which solution you'd like to run:\s
-                1. Integer Input
-                2. Array Input
-                3. List Input""");
-
-        int choice = scan.nextInt();
-
-        switch (choice) {
-            case 1 -> displayTriangleSolution1();
-            case 2 -> displayTriangleSolution2();
-            case 3 -> displayTriangleSolution3();
-            default -> System.out.println("Invalid choice!");
-        }
-    }
 
     static void displayTriangleSolution1() {
         Scanner scan = new Scanner(System.in);
@@ -46,7 +27,16 @@ public class PascalsTriangle {
             // calculates the binomial coefficients to print to the triangle
             for(int j = 0; j <= i; j++) {
                 System.out.print(number + " ");
-                // pascal's formula
+                number = calculateBinomial(number, i, j);
+            }
+
+            // next line
+            System.out.println();
+        }
+    }
+
+    static int calculateBinomial(int num, int i, int j) {
+        // pascal's formula
 
                 /*
                    number = 4
@@ -62,22 +52,6 @@ public class PascalsTriangle {
                           = 6
                           6 is then printed
                  */
-
-                number = number * (i - j) / (j + 1);
-            }
-
-            // next line
-            System.out.println();
-        }
-    }
-
-    static void displayTriangleSolution2() {
-        System.out.println("Placeholder");
-        int[][] entries;
-    }
-
-    static void displayTriangleSolution3() {
-        System.out.println("Placeholder");
-        List<List<Integer>> entries = new ArrayList<>();
+        return num * (i - j) / (j + 1);
     }
 }

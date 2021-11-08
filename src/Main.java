@@ -1,6 +1,7 @@
 public class Main {
 
     public static void main(String[] args) {
-    PascalsTriangle.chooseSolution();
+        PascalsTriangle.displayTriangleSolution1();
+        PriorityQueues.displayQueue();
     }
 }
