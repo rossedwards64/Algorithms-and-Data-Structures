@@ -4,24 +4,82 @@ public class PriorityQueues {
         PriorityQueues pq = new PriorityQueues();
         PriorityQueues.Node node;
 
-        node = pq.createNode("EEE", 4);
-        node = pq.push(node, "GGG", 5);
-        node = pq.push(node, "CCC", 2);
-        node = pq.push(node, "DDD", 4);
-        node = pq.push(node, "BBB", 2);
-        node = pq.push(node, "FFF", 4);
-        node = pq.push(node, "AAA", 1);
+        // data set given in the assignment brief
+        /*
+        Nodes should be printed in descending order of priority
+         */
+        {
+            node = pq.createNode("EEE", 4);
+            node = pq.push(node, "GGG", 5);
+            node = pq.push(node, "CCC", 2);
+            node = pq.push(node, "DDD", 4);
+            node = pq.push(node, "BBB", 2);
+            node = pq.push(node, "FFF", 4);
+            node = pq.push(node, "AAA", 1);
 
-        System.out.print("\n");
-        while(!pq.isEmpty(node)) {
-            System.out.print("Priority " + node.nodePriority + ": " + pq.peek(node) + " \n");
-            node = pq.pop(node);
+            System.out.print("\n");
+            while (!pq.isEmpty(node)) {
+                // prints node before popping off the list
+                System.out.print("Priority " + node.nodePriority + ": " + pq.peek(node) + " \n");
+                node = pq.pop(node);
+            }
+
+            /*
+            Once all nodes are printed, output will look like this:
+            Priority 1: AAA
+            Priority 2: CCC
+            Priority 2: BBB
+            Priority 4: FFF
+            Priority 4: DDD
+            Priority 4: EEE
+            Priority 5: GGG
+             */
+        }
+
+        // alternate data set to test algorithm effectiveness
+        // new data added and some data of existing nodes swapped around
+        {
+            node = pq.createNode("CCC", 4);
+            node = pq.push(node, "BBB", 5);
+            node = pq.push(node, "DDD", 2);
+            node = pq.push(node, "EEE", 4);
+            node = pq.push(node, "GGG", 2);
+            node = pq.push(node, "AAA", 4);
+            node = pq.push(node, "FFF", 1);
+            node = pq.push(node, "HHH", 3);
+            node = pq.push(node, "III", 5);
+            node = pq.push(node, "JJJ", 3);
+            node = pq.push(node, "KKK", 1);
+
+            System.out.print("\n");
+            while (!pq.isEmpty(node)) {
+                // prints node before popping off the list
+                System.out.print("Priority " + node.nodePriority + ": " + pq.peek(node) + " \n");
+                node = pq.pop(node);
+            }
+
+            /*
+            Once all nodes are printed, output should look like this:
+            Priority 1: FFF
+            Priority 1: KKK
+            Priority 2: DDD
+            Priority 2: GGG
+            Priority 3: JJJ
+            Priority 3: HHH
+            Priority 4: AAA
+            Priority 4: EEE
+            Priority 4: CCC
+            Priority 5: III
+            Priority 5: BBB
+             */
         }
     }
 
-    // initialise data members of node
+    // declare data members of node
     static class Node {
+        // value of the node
         String nodeData;
+        // what the node's position in the list will be
         int nodePriority;
         Node nextNode;
     }
