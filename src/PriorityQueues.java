@@ -4,9 +4,9 @@ public class PriorityQueues {
         PriorityQueues pq = new PriorityQueues();
         PriorityQueues.Node node;
 
-        // data set given in the assignment brief
         /*
         Nodes should be printed in descending order of priority
+        Nodes of the same priority are processed according to the order in which they are added to the queue
          */
         {
             node = pq.createNode("EEE", 4);
@@ -17,22 +17,12 @@ public class PriorityQueues {
             node = pq.push(node, "FFF", 4);
             node = pq.push(node, "AAA", 1);
 
-            System.out.print("\n");
-            while (!pq.isEmpty(node)) {
-                // prints node before popping off the list
-                System.out.print("Priority " + node.nodePriority + ": " + pq.peek(node) + " \n");
-                node = pq.pop(node);
-            }
+            pq.printNode(pq, node);
 
+            // data set given in the assignment brief
             /*
             Once all nodes are printed, output will look like this:
-            Priority 1: AAA
-            Priority 2: CCC
-            Priority 2: BBB
-            Priority 4: FFF
-            Priority 4: DDD
-            Priority 4: EEE
-            Priority 5: GGG
+            AAA -> CCC -> BBB -> FFF -> DDD -> EEE -> GGG
              */
         }
 
@@ -51,26 +41,11 @@ public class PriorityQueues {
             node = pq.push(node, "JJJ", 3);
             node = pq.push(node, "KKK", 1);
 
-            System.out.print("\n");
-            while (!pq.isEmpty(node)) {
-                // prints node before popping off the list
-                System.out.print("Priority " + node.nodePriority + ": " + pq.peek(node) + " \n");
-                node = pq.pop(node);
-            }
+            pq.printNode(pq, node);
 
             /*
             Once all nodes are printed, output should look like this:
-            Priority 1: FFF
-            Priority 1: KKK
-            Priority 2: DDD
-            Priority 2: GGG
-            Priority 3: JJJ
-            Priority 3: HHH
-            Priority 4: AAA
-            Priority 4: EEE
-            Priority 4: CCC
-            Priority 5: III
-            Priority 5: BBB
+            FFF -> KKK -> DDD -> GGG -> JJJ -> HHH -> AAA -> EEE -> CCC -> III -> BBB
              */
         }
     }
@@ -82,6 +57,21 @@ public class PriorityQueues {
         // what the node's position in the list will be
         int nodePriority;
         Node nextNode;
+    }
+
+    void printNode(PriorityQueues pq, Node node) {
+        System.out.print("\n");
+        while (!pq.isEmpty(node)) {
+            // prints node before popping off the list
+            if(node.nextNode != null) {
+                System.out.print(pq.peek(node) + " -> ");
+            } else {
+                // checks if there is a node after this node so that
+                // the output is formatted properly
+                System.out.print(pq.peek(node));
+            }
+            node = pq.pop(node);
+        }
     }
 
     // next node is null because this is the first node
