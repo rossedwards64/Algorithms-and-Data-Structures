@@ -1,27 +1,42 @@
 import java.util.LinkedList;
+import java.util.Scanner;
 
 public class Elevator {
 
     // start here
     static int currentLevel = 5;
+    static int levelRequest = 0;
+    static LinkedList<Integer> levelList = new LinkedList<>();
 
     public static void main(String[] args) {
-        LinkedList<Integer> levelList = new LinkedList<>();
-        levelList.add(4);
-        levelList.add(1);
-        levelList.add(8);
+        Thread thread = new Thread(() -> {
+            Scanner input = new Scanner(System.in);
+            System.out.println("Which level would you like to go to? ");
+            levelRequest = input.nextInt();
+            System.out.println("Going to level " + levelRequest);
+            levelList.add(levelRequest);
 
-        System.out.println("Levels in queue: " + levelList);
-
-        try {
-            elevator(levelList);
-        } catch(InterruptedException e) {
-            e.printStackTrace();
-        }
+            while(levelRequest != -1) {
+                try{
+                    elevator();
+                    System.out.println("Which level would you like to go to? ");
+                    levelRequest = input.nextInt();
+                    if(levelRequest != -1) {
+                        System.out.println("Going to level " + levelRequest);
+                        levelList.add(levelRequest);
+                    }
+                } catch(InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+            input.close();
+            System.out.println("The elevator has shut down!");
+        });
+        thread.start();
     }
 
     // NEEDS OPTIMISING
-    public static void elevator(LinkedList<Integer> levelList) throws InterruptedException {
+    public static void elevator() throws InterruptedException {
         System.out.println("Currently on: " + currentLevel);
         double start = System.currentTimeMillis();
 
