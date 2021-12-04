@@ -35,12 +35,11 @@ public class PascalsTriangle {
         }
     }
 
-    static int calculateBinomial(int num, int i, int j) {
+    static int calculateBinomial(int num, int n, int k) {
         // pascal's formula
 
                 /*
                    number = 4
-                   i and j are equal to n and k in pascal's formula
 
                    example: 4 * (4 - 1) / (1 + 1)
                                 = 3        = 2
@@ -52,6 +51,6 @@ public class PascalsTriangle {
                           = 6
                           6 is then printed
                  */
-        return num * (i - j) / (j + 1);
+        return num * (n - k) / (k + 1);
     }
 }

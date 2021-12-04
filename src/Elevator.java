@@ -3,28 +3,27 @@ import java.util.Scanner;
 
 public class Elevator {
 
+    // sort requests
+    // go to default floor after request
+    // instead of in/decrementing currentlevel, work out the difference between floors and add/subtract that
+
+    // have a loop that writes results to a file for testing
+
     // start here
-    static int currentLevel = 5;
+    static int startingLevel = 5;
+    static int currentLevel = startingLevel;
     static int levelRequest = 0;
     static LinkedList<Integer> levelList = new LinkedList<>();
 
     public static void main(String[] args) {
         Thread thread = new Thread(() -> {
             Scanner input = new Scanner(System.in);
-            System.out.println("Which level would you like to go to? ");
-            levelRequest = input.nextInt();
-            System.out.println("Going to level " + levelRequest);
-            levelList.add(levelRequest);
+            getUserInput(input);
 
             while(levelRequest != -1) {
                 try{
                     elevator();
-                    System.out.println("Which level would you like to go to? ");
-                    levelRequest = input.nextInt();
-                    if(levelRequest != -1) {
-                        System.out.println("Going to level " + levelRequest);
-                        levelList.add(levelRequest);
-                    }
+                    getUserInput(input);
                 } catch(InterruptedException e) {
                     e.printStackTrace();
                 }
@@ -35,28 +34,36 @@ public class Elevator {
         thread.start();
     }
 
+    public static void getUserInput(Scanner input) {
+        System.out.println("Which level would you like to go to? ");
+        levelRequest = input.nextInt();
+        if(levelRequest != -1) {
+            System.out.println("Going to level " + levelRequest);
+            levelList.add(levelRequest);
+        }
+    }
+
     // NEEDS OPTIMISING
     public static void elevator() throws InterruptedException {
-        System.out.println("Currently on: " + currentLevel);
+        System.out.println("Moving from level " + currentLevel);
         double start = System.currentTimeMillis();
 
         while(!levelList.isEmpty()) {
             int level = levelList.getFirst();
 
-            while(level > currentLevel) {
+            while(level > currentLevel++) {
                 String levelString = String.format("%s", currentLevel);
                 System.out.print(levelString);
                 Thread.sleep(1000);
-                currentLevel++;
             }
 
-            while(level < currentLevel) {
+            while(level < currentLevel--) {
                 String levelString = String.format("%s", currentLevel);
                 System.out.print(levelString);
                 Thread.sleep(1000);
-                currentLevel--;
             }
-            System.out.println("\nYou have arrived at level: " + currentLevel);
+
+            System.out.println("\nYou have arrived at level " + currentLevel);
             levelList.removeFirst();
             Thread.sleep(2000);
         }
