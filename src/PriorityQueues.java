@@ -1,10 +1,10 @@
 import java.util.Arrays;
 
 class PriorityQueues {
-    static int[] priority = new int[8];
-    static String[] data = new String[8];
+    static int[] priority = new int[7];
+    static String[] data = new String[7];
     static int[] link = new int[8];
-    static int[] storage = new int[8];
+    static int[] storage = new int[7];
 
     static int front;
     static int rear;
@@ -14,27 +14,58 @@ class PriorityQueues {
     public static void main(String[] args) {
         createQueue();
         init(8);
+        System.out.println("Storage before filling queue: " + Arrays.toString(storage));
+        System.out.println("Link: " + Arrays.toString(link));
         insertAt(0, "EEE", 4);
+        System.out.println("Link: " + Arrays.toString(link));
         insertAt(1, "GGG", 5);
+        System.out.println("Link: " + Arrays.toString(link));
         insertAt(2, "CCC", 2);
+        System.out.println("Link: " + Arrays.toString(link));
         insertAt(3, "DDD", 4);
+        System.out.println("Link: " + Arrays.toString(link));
         insertAt(4, "BBB", 2);
+        System.out.println("Link: " + Arrays.toString(link));
         insertAt(5, "FFF", 4);
+        System.out.println("Link: " + Arrays.toString(link));
         insertAt(6, "AAA", 1);
+        System.out.println("Link: " + Arrays.toString(link));
         printJobs();
-    }
+        System.out.println("Storage after filling queue: " + Arrays.toString(storage));
+        sortJobs();
+        printJobs();
 
-    static void printJobs() {
-        for(int i = 0; i < data.length; i++) {
-            if(data[i] != null && priority[i] != 0) {
-                System.out.print(priority[i] + ":" + data[i] + " -> ");
-            }
-        }
+//        System.out.println("Link: " + Arrays.toString(link));
+//        removeFrom(0);
+//        printJobs();
+//        System.out.println("Storage after removal: " + Arrays.toString(storage));
+//        System.out.println("Link: " + Arrays.toString(link));
+//        removeFrom(1);
+//        printJobs();
+//        System.out.println("Storage after removal: " + Arrays.toString(storage));
+//        System.out.println("Link: " + Arrays.toString(link));
+//        removeFrom(2);
+//        printJobs();
+//        System.out.println("Storage after removal: " + Arrays.toString(storage));
+//        System.out.println("Link: " + Arrays.toString(link));
     }
 
     static void createQueue() {
         front = -1;
         rear = -1;
+    }
+
+    static void printJobs() {
+        for(int i = 0; i < data.length; i++) {
+            if(data[i] != null && priority[i] != 0) {
+                if(i != data.length - 1) {
+                    System.out.print(priority[i] + ": " + data[i] + " -> ");
+                } else {
+                    System.out.print(priority[i] + ": " + data[i]);
+                }
+            }
+        }
+        System.out.println("\n");
     }
 
     static int getNode() {
@@ -47,24 +78,37 @@ class PriorityQueues {
         }
         // because an index has been removed, set the final
         // element in storage to 0
-        storage[max - 1] = 0;
+        storage[max - 1] = -1;
         if(isEmpty()) {
             return 0;
         }
+
+        // subtract one to account for indexes counting
+        // from zero
         return node;
+    }
+
+    static void retNode(int node) {
+        // shift all elements to the right
+        for(int i = max - 2; i >= 0; i--) {
+            storage[i + 1] = storage[i];
+        }
+        // put node in first element
+        storage[0] = node;
     }
 
     static void init(int n) {
         for(int i = 0; i < n; i++) {
-            storage[i] = i + 1;
+            if(i != max) {
+                storage[i] = i + 1;
+            }
+            link[i] = -1;
         }
     }
 
     static void insertAt(int position, String description, int priorityLvl) {
         int pointer;
         int index = 0;
-        String tempData;
-        int tempPriority, tempPointer;
         int newPointer = -1;
 
         if(isEmpty()) {
@@ -80,40 +124,57 @@ class PriorityQueues {
                 pointer = link[pointer];
                 index++;
             }
-
-            tempData = data[pointer];
-            tempPriority = priority[pointer];
-            tempPointer = link[pointer];
-
             data[pointer] = description;
             priority[pointer] = priorityLvl;
             newPointer = getNode();
             link[pointer] = newPointer;
-
-            data[newPointer] = tempData;
-            priority[newPointer] = tempPriority;
-            link[newPointer] = tempPointer;
         }
         rear = newPointer;
     }
 
-    // put retNode() somewhere in here
+    // data and priority need to be set to null
+    // then any elements after need to be shifted
+    // to the left so there is no null
     static void removeFrom(int position) {
-        int counter = 1;
-        int pointer = front;
+        int index = 1;
 
-        if(position == 1) {
+        // add one to account for indexes counting from zero
+        // this is to avoid returning 0 to storage instead
+        // of 1 when removing the first element, for example
+        int pointer = front + 1;
+
+        if(position == 0) {
             front = link[front];
+            retNode(pointer);
         } else {
-            while(counter != position) {
+            while(index != position) {
                 rear = pointer;
                 pointer = link[pointer];
-                counter++;
+                index++;
             }
+            retNode(pointer);
             if(pointer == 0) {
-                link[rear] = 0;
+                link[rear] = -1;
             } else {
                 link[rear] = link[pointer];
+            }
+        }
+    }
+
+    // sort data and link arrays to correspond
+    // to priority array
+    static void sortJobs() {
+        int tempPriority;
+        int tempData;
+        int tempLink;
+
+        for (int i = 0; i < priority.length; i++) {
+            for (int j = i + 1; j < priority.length; j++) {
+                if(priority[i] > priority[j]) {
+                    tempPriority = priority[i];
+                    priority[i] = priority[j];
+                    priority[j] = tempPriority;
+                }
             }
         }
     }
@@ -123,6 +184,6 @@ class PriorityQueues {
     }
 
     static boolean isFull() {
-        return rear == max - 1;
+        return rear == max;
     }
 }
