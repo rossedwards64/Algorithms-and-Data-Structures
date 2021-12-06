@@ -34,7 +34,7 @@ class PriorityQueues {
         System.out.println("Storage after filling queue: " + Arrays.toString(storage));
         sortJobs();
         printJobs();
-
+        System.out.println("Link: " + Arrays.toString(link));
 //        System.out.println("Link: " + Arrays.toString(link));
 //        removeFrom(0);
 //        printJobs();
@@ -106,6 +106,11 @@ class PriorityQueues {
         }
     }
 
+    // before adding element to queue, check if the priority level
+    // is higher or lower than the element that is already there
+    // if it is higher, then shift all elements after it one to the right
+    // if it lower, move onto the next element and do the check again
+    //
     static void insertAt(int position, String description, int priorityLvl) {
         int pointer;
         int index = 0;
@@ -165,15 +170,23 @@ class PriorityQueues {
     // to priority array
     static void sortJobs() {
         int tempPriority;
-        int tempData;
+        String tempData;
         int tempLink;
 
         for (int i = 0; i < priority.length; i++) {
             for (int j = i + 1; j < priority.length; j++) {
                 if(priority[i] > priority[j]) {
                     tempPriority = priority[i];
+                    tempData = data[i];
+                    tempLink = link[i];
+
                     priority[i] = priority[j];
+                    data[i] = data[j];
+                    link[i] = link[j];
+
                     priority[j] = tempPriority;
+                    data[j] = tempData;
+                    link[j] = tempLink;
                 }
             }
         }
