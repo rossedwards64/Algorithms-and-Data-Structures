@@ -1,8 +1,8 @@
 import java.util.Arrays;
 
 class PriorityQueues {
-    static int[] priority = new int[7];
-    static String[] data = new String[7];
+    static int[] priority = new int[8];
+    static String[] data = new String[8];
     static int[] link = new int[8];
     static int[] storage = new int[7];
 
@@ -15,27 +15,16 @@ class PriorityQueues {
         createQueue();
         init(8);
         System.out.println("Storage before filling queue: " + Arrays.toString(storage));
-        System.out.println("Link: " + Arrays.toString(link));
-        insertAt(0, "EEE", 4);
-        System.out.println("Link: " + Arrays.toString(link));
-        insertAt(1, "GGG", 5);
-        System.out.println("Link: " + Arrays.toString(link));
-        insertAt(2, "CCC", 2);
-        System.out.println("Link: " + Arrays.toString(link));
-        insertAt(3, "DDD", 4);
-        System.out.println("Link: " + Arrays.toString(link));
-        insertAt(4, "BBB", 2);
-        System.out.println("Link: " + Arrays.toString(link));
-        insertAt(5, "FFF", 4);
-        System.out.println("Link: " + Arrays.toString(link));
-        insertAt(6, "AAA", 1);
-        System.out.println("Link: " + Arrays.toString(link));
+        insert("EEE", 4);
+        insert("GGG", 5);
+        insert("CCC", 2);
+        insert("DDD", 4);
+        insert("BBB", 2);
+        insert("FFF", 4);
+        insert("AAA", 1);
         printJobs();
         System.out.println("Storage after filling queue: " + Arrays.toString(storage));
-        sortJobs();
-        printJobs();
         System.out.println("Link: " + Arrays.toString(link));
-//        System.out.println("Link: " + Arrays.toString(link));
 //        removeFrom(0);
 //        printJobs();
 //        System.out.println("Storage after removal: " + Arrays.toString(storage));
@@ -110,8 +99,11 @@ class PriorityQueues {
     // is higher or lower than the element that is already there
     // if it is higher, then shift all elements after it one to the right
     // if it lower, move onto the next element and do the check again
-    //
-    static void insertAt(int position, String description, int priorityLvl) {
+
+    static void insert(String description, int priorityLvl) {
+        // set position to 1 because the first index
+        // will be occupied if the queue is not empty
+        int position = 1;
         int pointer;
         int index = 0;
         int newPointer = -1;
@@ -124,15 +116,25 @@ class PriorityQueues {
         } else if(isFull()) {
             System.out.println("Queue is full.");
         } else {
+            // set pointer to the position that the node will
+            // be inserted into
             pointer = front;
+
+            // find another way to get the position
+            // currently because it's assigned to
+            // 1 the second index will not have
+            // anything put into it
             while(index != position) {
                 pointer = link[pointer];
                 index++;
             }
-            data[pointer] = description;
-            priority[pointer] = priorityLvl;
             newPointer = getNode();
-            link[pointer] = newPointer;
+
+            // insert node into all arrays at the
+            // specified position
+            data[newPointer] = description;
+            priority[newPointer] = priorityLvl;
+            link[newPointer] = newPointer;
         }
         rear = newPointer;
     }
