@@ -1,8 +1,8 @@
 import java.util.Arrays;
 
 class PriorityQueues {
-    static int[] priority = new int[8];
-    static String[] data = new String[8];
+    static int[] priority = new int[7];
+    static String[] data = new String[7];
     static int[] link = new int[8];
     static int[] storage = new int[7];
 
@@ -23,8 +23,10 @@ class PriorityQueues {
         insert("FFF", 4);
         insert("AAA", 1);
         printJobs();
-        System.out.println("Storage after filling queue: " + Arrays.toString(storage));
+        System.out.println("Data: " + Arrays.toString(data));
+        System.out.println("Priority: " + Arrays.toString(priority));
         System.out.println("Link: " + Arrays.toString(link));
+        System.out.println("Storage after filling queue: " + Arrays.toString(storage));
 //        removeFrom(0);
 //        printJobs();
 //        System.out.println("Storage after removal: " + Arrays.toString(storage));
@@ -45,6 +47,7 @@ class PriorityQueues {
     }
 
     static void printJobs() {
+        System.out.println();
         for(int i = 0; i < data.length; i++) {
             if(data[i] != null && priority[i] != 0) {
                 if(i != data.length - 1) {
@@ -101,13 +104,7 @@ class PriorityQueues {
     // if it lower, move onto the next element and do the check again
 
     static void insert(String description, int priorityLvl) {
-        // set position to 1 because the first index
-        // will be occupied if the queue is not empty
-        int position = 1;
-        int pointer;
-        int index = 0;
-        int newPointer = -1;
-
+        int pointer = -1;
         if(isEmpty()) {
             front = getNode();
             data[front] = description;
@@ -118,25 +115,16 @@ class PriorityQueues {
         } else {
             // set pointer to the position that the node will
             // be inserted into
-            pointer = front;
-
-            // find another way to get the position
-            // currently because it's assigned to
-            // 1 the second index will not have
-            // anything put into it
-            while(index != position) {
-                pointer = link[pointer];
-                index++;
-            }
-            newPointer = getNode();
+            pointer = getNode();
 
             // insert node into all arrays at the
             // specified position
-            data[newPointer] = description;
-            priority[newPointer] = priorityLvl;
-            link[newPointer] = newPointer;
+            link[pointer - 1] = pointer;
+            link[pointer] = pointer + 1;
+            data[pointer - 1] = description;
+            priority[pointer - 1] = priorityLvl;
         }
-        rear = newPointer;
+        rear = pointer;
     }
 
     // data and priority need to be set to null
@@ -164,32 +152,6 @@ class PriorityQueues {
                 link[rear] = -1;
             } else {
                 link[rear] = link[pointer];
-            }
-        }
-    }
-
-    // sort data and link arrays to correspond
-    // to priority array
-    static void sortJobs() {
-        int tempPriority;
-        String tempData;
-        int tempLink;
-
-        for (int i = 0; i < priority.length; i++) {
-            for (int j = i + 1; j < priority.length; j++) {
-                if(priority[i] > priority[j]) {
-                    tempPriority = priority[i];
-                    tempData = data[i];
-                    tempLink = link[i];
-
-                    priority[i] = priority[j];
-                    data[i] = data[j];
-                    link[i] = link[j];
-
-                    priority[j] = tempPriority;
-                    data[j] = tempData;
-                    link[j] = tempLink;
-                }
             }
         }
     }
