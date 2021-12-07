@@ -1,75 +1,66 @@
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.LinkedList;
-import java.util.Scanner;
 
 public class Elevator {
 
-    // sort requests
-    // go to default floor after request
-    // instead of in/decrementing currentlevel, work out the difference between floors and add/subtract that
-
-    // have a loop that writes results to a file for testing
-
-    // start here
-    static int startingLevel = 5;
-    static int currentLevel = startingLevel;
-    static int levelRequest = 0;
-    static LinkedList<Integer> levelList = new LinkedList<>();
+    static int floor = 5;
 
     public static void main(String[] args) {
-        Thread thread = new Thread(() -> {
-            Scanner input = new Scanner(System.in);
-            getUserInput(input);
+        LinkedList<Integer> floorList = new LinkedList<>();
+        floorList.add(4);
+        floorList.add(1);
+        floorList.add(8);
+        floorList.add(6);
+        floorList.add(3);
 
-            while(levelRequest != -1) {
-                try{
-                    elevator();
-                    getUserInput(input);
-                } catch(InterruptedException e) {
-                    e.printStackTrace();
-                }
-            }
-            input.close();
-            System.out.println("The elevator has shut down!");
-        });
-        thread.start();
-    }
-
-    public static void getUserInput(Scanner input) {
-        System.out.println("Which level would you like to go to? ");
-        levelRequest = input.nextInt();
-        if(levelRequest != -1) {
-            System.out.println("Going to level " + levelRequest);
-            levelList.add(levelRequest);
+        try {
+            elevator(floorList);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
     }
 
-    // NEEDS OPTIMISING
-    public static void elevator() throws InterruptedException {
-        System.out.println("Moving from level " + currentLevel);
-        double start = System.currentTimeMillis();
+    static void elevator(LinkedList<Integer> floorList) throws InterruptedException {
+        floorList.sort(Comparator.naturalOrder());
+        System.out.println("Level Requests: " + floorList);
+        System.out.println("Starting from: " + floor);
+        double startTime = System.currentTimeMillis();
+        while(!floorList.isEmpty()) {
+            int currentFloor = floorList.getFirst();
 
-        while(!levelList.isEmpty()) {
-            int level = levelList.getFirst();
+            if(currentFloor > floor) {
+                int difference = currentFloor - floor;
 
-            while(level > currentLevel++) {
-                String levelString = String.format("%s", currentLevel);
-                System.out.print(levelString);
-                Thread.sleep(1000);
+                for(int i = 0; i < difference; i++) {
+                    String string = String.format("%s", floor);
+                    System.out.print(string + " ");
+                    floor++;
+                    Thread.sleep(1000);
+                }
+            } else if(currentFloor < floor) {
+                int difference = floor - currentFloor;
+
+                for(int i = 0; i < difference; i++) {
+                    String string = String.format("%s", floor);
+                    System.out.print(string + " ");
+                    floor--;
+                    Thread.sleep(1000);
+                }
+
+            } else {
+                String string = String.format("%s", floor);
+                System.out.println(string);
+                System.out.println("Already on floor.");
             }
 
-            while(level < currentLevel--) {
-                String levelString = String.format("%s", currentLevel);
-                System.out.print(levelString);
-                Thread.sleep(1000);
-            }
-
-            System.out.println("\nYou have arrived at level " + currentLevel);
-            levelList.removeFirst();
+            floorList.removeFirst();
+            System.out.println();
             Thread.sleep(2000);
         }
 
-        double end = System.currentTimeMillis();
-        double duration = (end - start) / 1000;
-        System.out.println("Duration: " + duration + " seconds");
+        double endTime = System.currentTimeMillis();
+        double time = (endTime - startTime) / 1000;
+        System.out.println("\nDuration: " + time + " seconds");
     }
 }
