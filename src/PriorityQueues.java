@@ -23,10 +23,6 @@ class PriorityQueues {
         insert("AAA", 1);
         printJobs();
         peek();
-//        removeFrom(0);
-//        removeFrom(1);
-//        removeFrom(2);
-//        printJobs();
     }
 
     static void createQueue() {
@@ -64,11 +60,9 @@ class PriorityQueues {
     }
 
     static void retNode(int node) {
-
         for(int i = max - 2; i >= 0; i--) {
             storage[i + 1] = storage[i];
         }
-
         storage[0] = node;
     }
 
