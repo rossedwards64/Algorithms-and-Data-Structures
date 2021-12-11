@@ -17,7 +17,6 @@ public class GeneticAlgorithm {
         double fitness;
 
         public Individual(int n) {
-
             ArrayList<Integer> chromosome = new ArrayList<>();//we use set to get unique number within the range
 
             Random r = new Random();
@@ -31,7 +30,6 @@ public class GeneticAlgorithm {
         }
 
         public void setFitness () {
-
             double res;
             int size = chromosome.size();
 
@@ -65,11 +63,9 @@ public class GeneticAlgorithm {
     }
 
     static class Population{
-
         public ArrayList<Individual> population = new ArrayList<>();
 
         public Population (int popSize, double chromosomeSize) {
-
             for (int i=0; i<popSize; i++) {
                 Individual ind = new Individual((int) chromosomeSize);
                 this.population.add(ind);
@@ -77,7 +73,6 @@ public class GeneticAlgorithm {
         }
 
         public void printPop() {
-
             for (Individual individual : population) {
                 System.out.print(individual.chromosome + "\t");
                 System.out.println(individual.fitness);
@@ -85,10 +80,8 @@ public class GeneticAlgorithm {
         }
 
         public Individual crossOver (Individual p1, double rate) {
-
             Set<Integer> chromosome = new LinkedHashSet<>();//we use set to get unique number within the range
             Individual res = new Individual(p1.chromosome.size());
-
             int point = (int)(p1.chromosome.size()*rate);
 
             for (int i=0; i<point; i++) {
@@ -101,7 +94,6 @@ public class GeneticAlgorithm {
             }
 
             res.chromosome = new ArrayList<>(chromosome); //convert set into arrayList
-
             return res;
         }
 
@@ -122,12 +114,9 @@ public class GeneticAlgorithm {
 
             return res;
         }
-
-
     }
 
     public static void runGA() {
-
         //create a population object and parameters
         //int chromosomeSize = 10;
         int numGeneration = 10;
@@ -138,7 +127,6 @@ public class GeneticAlgorithm {
         String file = "geneticSample.csv";
         dataset = Data.readFile(file);
         double chromosomeSize = dataset.get(0);
-        //Data.printArray(dataset);
 
         // initialise the population
         Population pop = new Population(popSize, chromosomeSize); // create 10 candidates, each candidates has 5 genes (5 nodes), pass dataset to calculate fitness
@@ -149,7 +137,6 @@ public class GeneticAlgorithm {
         pop.printPop();
 
         for (int gen=0; gen<numGeneration; gen++) {
-
             System.out.println("Generation : "+gen);
 
             // get the parents - top 2 from the list
