@@ -1,4 +1,3 @@
-import java.util.Arrays;
 import java.util.Scanner;
 
 public class PascalsTriangle {
@@ -64,13 +63,14 @@ public class PascalsTriangle {
         }
 
         for(int i = 0; i <= rowNum; i++) {
-            for(int j = 0; j <= rowNum - i; i++) {
+            for(int j = 0; j <= rowNum - i; j++) {
                 System.out.print(" ");
             }
 
             for(int j = 0; j <= i; j++) {
                 System.out.print(" " + factorial(i) / (factorial(i - j) * factorial(j)));
             }
+            System.out.println();
         }
     }
 
@@ -79,6 +79,11 @@ public class PascalsTriangle {
             return 1;
         }
 
+        /* multiply i by the previous number
+           function is recursive so that every
+           number before i is also multiplied
+           so if i = 5,
+           1  2 x 3 x 4 x 5 */
         return i * factorial(i - 1);
     }
 }
