@@ -10,6 +10,20 @@
             </Attribute>
           </value>
         </entry>
+        <entry key="\geneticResult.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="\geneticSample.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
         <entry key="\newData.csv">
           <value>
             <Attribute>
