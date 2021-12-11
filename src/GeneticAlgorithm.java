@@ -48,18 +48,6 @@ public class GeneticAlgorithm {
 
             this.fitness = res;
         }
-
-        public Individual copyGenes(Individual ind) {
-
-            Individual res = new Individual(ind.chromosome.size());
-
-            for (int i=0; i<ind.chromosome.size(); i++) {
-                res.chromosome.set(i, ind.chromosome.get(i));
-            }
-
-            return res;
-        }
-
     }
 
     static class Population{
@@ -79,8 +67,23 @@ public class GeneticAlgorithm {
             }
         }
 
-        public Individual crossOver (Individual p1, double rate) {
-            Set<Integer> chromosome = new LinkedHashSet<>();//we use set to get unique number within the range
+        public Individual crossOver (Individual p1, Individual p2, double rate) {
+            Individual res = new Individual(p1.chromosome.size());
+            int point = (int)(p1.chromosome.size()*rate);
+
+            for (int i=0; i<point; i++) {
+                res.chromosome.set(i, p1.chromosome.get(i)); //copy some genes from the parent
+            }
+
+            for (int i = 0; i < p2.chromosome.size(); i++) {
+                res.chromosome.set(i, p2.chromosome.get(i));
+            }
+
+            return res;
+        }
+
+        public Individual mutate (Individual p1, Double rate) {
+            ArrayList<Integer> chromosome = new ArrayList<>();//we use set to get unique number within the range
             Individual res = new Individual(p1.chromosome.size());
             int point = (int)(p1.chromosome.size()*rate);
 
@@ -90,38 +93,18 @@ public class GeneticAlgorithm {
 
             Random r = new Random();
             while(chromosome.size()<p1.chromosome.size()) {
-                chromosome.add(r.nextInt(p1.chromosome.size())); //get the remaining genes by random
+                chromosome.add(r.nextInt(2));
             }
-
-            res.chromosome = new ArrayList<>(chromosome); //convert set into arrayList
-            return res;
-        }
-
-        public Individual mutate (Individual p1) {
-            Individual res = p1.copyGenes(p1); //we copy the parent's genes first
-
-            //now we mutate the genes, using small change (swap genes by random)
-            Random r = new Random();
-            int i = r.nextInt(p1.chromosome.size());
-            int j = r.nextInt(p1.chromosome.size());
-
-            //to avoid getting the same gene
-            while(i == j) {
-                j = r.nextInt(p1.chromosome.size());
-            }
-            res.chromosome.set(i, p1.chromosome.get(j));
-            res.chromosome.set(j, p1.chromosome.get(i));
-
             return res;
         }
     }
 
     public static void runGA() {
         //create a population object and parameters
-        //int chromosomeSize = 10;
         int numGeneration = 10;
         int popSize = 10;
         double crossOverRate = 0.6;
+        double mutationRate = 0.3;
 
         //prepare dataset
         String file = "geneticSample.csv";
@@ -133,8 +116,6 @@ public class GeneticAlgorithm {
 
         // We sort the candidates by fitness in ascending order, the least the better in this example (TSP)
         pop.population.sort(new CompareFitness()); // sorting the population by fitness (asc)
-        System.out.println("====Before Search====");
-        pop.printPop();
 
         for (int gen=0; gen<numGeneration; gen++) {
             System.out.println("Generation : "+gen);
@@ -144,11 +125,12 @@ public class GeneticAlgorithm {
             Individual p2 = pop.population.get(1);
 
             // get 2 new children
-            Individual ch1 = pop.crossOver(p1, crossOverRate);
-            Individual ch2 = pop.crossOver(p2, crossOverRate);
+            Individual ch1 = pop.crossOver(p1, p2, crossOverRate);
+            Individual ch2 = pop.crossOver(p2, p2, crossOverRate);
 
             // get a mutate child
-            Individual ch3 = pop.mutate(p1);
+            Individual ch3 = pop.mutate(p1, mutationRate);
+
             System.out.println();
             // add these new children to the population
             pop.population.add(ch1);
@@ -157,14 +139,16 @@ public class GeneticAlgorithm {
 
             //sort them
             pop.population.sort(new CompareFitness()); //sorting the population by fitness (asc)
-        }
 
-        System.out.println("====Result====");
-        pop.printPop();
+            // remove weakest links
+            pop.population.remove(popSize);
+            pop.population.remove(popSize);
+            pop.population.remove(popSize);
+            pop.printPop();
+        }
 
         String fileName = "geneticResult.csv";
         Data.writeResult(fileName, pop);
         finalFitness = pop.population.get(0).fitness;
-
     }
 }
