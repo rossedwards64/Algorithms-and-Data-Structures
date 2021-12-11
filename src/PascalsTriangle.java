@@ -53,4 +53,32 @@ public class PascalsTriangle {
                  */
         return num * (n - k) / (k + 1);
     }
+
+    static void displayTriangleSolution2() {
+        Scanner scan = new Scanner(System.in);
+        System.out.println("How many lines would you like to print?: ");
+        int rowNum = scan.nextInt();
+
+        if(rowNum == 0) {
+            return;
+        }
+
+        for(int i = 0; i <= rowNum; i++) {
+            for(int j = 0; j <= rowNum - i; i++) {
+                System.out.print(" ");
+            }
+
+            for(int j = 0; j <= i; j++) {
+                System.out.print(" " + factorial(i) / (factorial(i - j) * factorial(j)));
+            }
+        }
+    }
+
+    static int factorial(int i) {
+        if(i == 0) {
+            return 1;
+        }
+
+        return i * factorial(i - 1);
+    }
 }
