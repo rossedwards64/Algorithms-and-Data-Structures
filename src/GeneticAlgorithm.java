@@ -1,7 +1,13 @@
 import java.util.ArrayList;
-import java.util.LinkedHashSet;
+import java.util.Comparator;
 import java.util.Random;
-import java.util.Set;
+
+// write every generation to csv file
+// change crossover rate, write that to another csv file
+// change mutation rate, write that to another csv file
+// append csv files to portfolio to cut down on space
+// create graphs with horizontal axis as generations and vertical axis as fitness levels
+// add a function that shows that the fitness values are being calculated correctly
 
 public class GeneticAlgorithm {
     static ArrayList<Double> dataset = new ArrayList<>();
@@ -36,15 +42,18 @@ public class GeneticAlgorithm {
             double left = 0;
             double right = 0;
 
-            for(int i=0; i<size-1; i++) {
+            for(int i=0; i<size; i++) {
                 if(chromosome.get(i) == 0) {
                     left += dataset.get(i);
+                    System.out.print("Left: " + left + " ");
                 } else {
                     right += dataset.get(i);
+                    System.out.print("Right: " + right + " ");
                 }
             }
 
             res = Math.abs(left - right);
+            System.out.println("\n Result: " + res);
 
             this.fitness = res;
         }
@@ -101,7 +110,7 @@ public class GeneticAlgorithm {
 
     public static void runGA() {
         //create a population object and parameters
-        int numGeneration = 10;
+        int numGeneration = 30;
         int popSize = 10;
         double crossOverRate = 0.6;
         double mutationRate = 0.3;
@@ -109,7 +118,7 @@ public class GeneticAlgorithm {
         //prepare dataset
         String file = "geneticSample.csv";
         dataset = Data.readFile(file);
-        double chromosomeSize = dataset.get(0);
+        double chromosomeSize = dataset.size();
 
         // initialise the population
         Population pop = new Population(popSize, chromosomeSize); // create 10 candidates, each candidates has 5 genes (5 nodes), pass dataset to calculate fitness
@@ -124,18 +133,28 @@ public class GeneticAlgorithm {
             Individual p1 = pop.population.get(0);
             Individual p2 = pop.population.get(1);
 
+            // get the worst parents at the bottom of the list
+//            Individual p3 = pop.population.get(8);
+//            Individual p4 = pop.population.get(9);
+
             // get 2 new children
             Individual ch1 = pop.crossOver(p1, p2, crossOverRate);
             Individual ch2 = pop.crossOver(p2, p2, crossOverRate);
 
-            // get a mutate child
-            Individual ch3 = pop.mutate(p1, mutationRate);
+//            Individual ch3 = pop.crossOver(p3, p4, crossOverRate);
+//            Individual ch4 = pop.crossOver(p3, p4, crossOverRate);
 
-            System.out.println();
+            // get a mutate child
+            Individual ch5 = pop.mutate(p1, mutationRate);
+            //Individual ch6 = pop.mutate(p3, mutationRate);
+
             // add these new children to the population
             pop.population.add(ch1);
             pop.population.add(ch2);
-            pop.population.add(ch3);
+            pop.population.add(ch5);
+//            pop.population.add(ch4);
+//            pop.population.add(ch5);
+//            pop.population.add(ch6);
 
             //sort them
             pop.population.sort(new CompareFitness()); //sorting the population by fitness (asc)
@@ -144,9 +163,11 @@ public class GeneticAlgorithm {
             pop.population.remove(popSize);
             pop.population.remove(popSize);
             pop.population.remove(popSize);
+            String fileName = "C:\\Users\\redwa\\IdeaProjects\\Algorithms-and-Data-Structures\\result\\geneticResult" + gen + ".csv";
+            Data.writeResult(fileName, pop);
             pop.printPop();
+            System.out.println();
         }
-
         String fileName = "geneticResult.csv";
         Data.writeResult(fileName, pop);
         finalFitness = pop.population.get(0).fitness;
