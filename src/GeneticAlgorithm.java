@@ -7,6 +7,8 @@ import java.util.Random;
 // append csv files to portfolio to cut down on space
 // create graphs with horizontal axis as generations and vertical axis as fitness levels
 // add a function that shows that the fitness values are being calculated correctly
+// in excel, work out which numbers from geneticSample are 0 (left) or 1 (right), then work out the sum of the
+// 0 numbers and the sum of the 1 numbers
 
 public class GeneticAlgorithm {
     static ArrayList<Double> dataset = new ArrayList<>();
@@ -18,19 +20,21 @@ public class GeneticAlgorithm {
 
     static class Individual{
 
-        public ArrayList<Integer> chromosome;
+        public ArrayList<Integer> chromosome = new ArrayList<>();
         double fitness;
 
         public Individual(int n) {
-            ArrayList<Integer> chromosome = new ArrayList<>();//we use set to get unique number within the range
-
             Random r = new Random();
 
             while(chromosome.size()<n) {
-                chromosome.add(r.nextInt(2));
+                this.chromosome.add(r.nextInt(2));
             }
 
-            this.chromosome = new ArrayList<>(chromosome); //convert set into arrayList
+            setFitness();
+        }
+
+        public Individual(ArrayList<Integer> genes) {
+            this.chromosome.addAll(genes);
             setFitness();
         }
 
@@ -50,7 +54,6 @@ public class GeneticAlgorithm {
             }
 
             res = Math.abs(left - right);
-
             this.fitness = res;
         }
     }
@@ -58,9 +61,9 @@ public class GeneticAlgorithm {
     static class Population{
         public ArrayList<Individual> population = new ArrayList<>();
 
-        public Population (int popSize, double chromosomeSize) {
+        public Population (int popSize, int chromosomeSize) {
             for (int i=0; i<popSize; i++) {
-                Individual ind = new Individual((int) chromosomeSize);
+                Individual ind = new Individual(chromosomeSize);
                 this.population.add(ind);
             }
         }
@@ -73,34 +76,38 @@ public class GeneticAlgorithm {
         }
 
         public Individual crossOver (Individual p1, Individual p2, double rate) {
-            Individual res = new Individual(p1.chromosome.size());
+            ArrayList<Integer> genes = new ArrayList<>();
+
             int point = (int)(p1.chromosome.size()*rate);
 
             for (int i=0; i<point; i++) {
-                res.chromosome.set(i, p1.chromosome.get(i)); //copy some genes from the parent
+                genes.add(p1.chromosome.get(i));
+                //res.chromosome.set(i, p1.chromosome.get(i)); //copy some genes from the parent
             }
 
-            for (int i = 0; i < p2.chromosome.size(); i++) {
-                res.chromosome.set(i, p2.chromosome.get(i));
+            //res.chromosome.set(i, p2.chromosome.get(i));
+            for(int i = point; i < p2.chromosome.size(); i++) {
+                genes.add(p2.chromosome.get(i));
             }
 
-            return res;
+            return new Individual(genes);
         }
 
         public Individual mutate (Individual p1, Double rate) {
-            ArrayList<Integer> chromosome = new ArrayList<>();//we use set to get unique number within the range
-            Individual res = new Individual(p1.chromosome.size());
+            ArrayList<Integer> genes = new ArrayList<>();//we use set to get unique number within the range
+
             int point = (int)(p1.chromosome.size()*rate);
 
             for (int i=0; i<point; i++) {
-                chromosome.add(p1.chromosome.get(i)); //copy some genes from the parent
+                genes.add(p1.chromosome.get(i)); //copy some genes from the parent
             }
 
             Random r = new Random();
-            while(chromosome.size()<p1.chromosome.size()) {
-                chromosome.add(r.nextInt(2));
+            while(genes.size()<p1.chromosome.size()) {
+                genes.add(r.nextInt(2));
             }
-            return res;
+
+            return new Individual(genes);
         }
     }
 
@@ -114,7 +121,7 @@ public class GeneticAlgorithm {
         //prepare dataset
         String file = "geneticSample.csv";
         dataset = Data.readFile(file);
-        double chromosomeSize = dataset.size();
+        int chromosomeSize = dataset.size();
 
         // initialise the population
         Population pop = new Population(popSize, chromosomeSize); // create 10 candidates, each candidates has 5 genes (5 nodes), pass dataset to calculate fitness
