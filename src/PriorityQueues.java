@@ -1,5 +1,3 @@
-import java.util.Arrays;
-
 class PriorityQueues {
     static int[] priority = new int[7];
     static String[] data = new String[7];
@@ -13,7 +11,6 @@ class PriorityQueues {
     public static void main(String[] args) {
         createQueue();
         init(8);
-        System.out.println("Storage before filling queue: " + Arrays.toString(storage));
         insert("EEE", 4);
         insert("GGG", 5);
         insert("CCC", 2);
@@ -22,7 +19,25 @@ class PriorityQueues {
         insert("FFF", 4);
         insert("AAA", 1);
         printJobs();
-        peek();
+
+        remove();
+        System.out.println();
+        printJobs();
+        remove();
+        System.out.println();
+        printJobs();
+        remove();
+        System.out.println();
+        printJobs();
+        remove();
+        System.out.println();
+        printJobs();
+        remove();
+        System.out.println();
+        printJobs();
+        remove();
+        System.out.println();
+        printJobs();
     }
 
     static void createQueue() {
@@ -33,7 +48,7 @@ class PriorityQueues {
     static void init(int n) {
         for(int i = 0; i < n; i++) {
             if(i != max) {
-                storage[i] = i + 1;
+                storage[i] = i;
             }
             link[i] = -1;
         }
@@ -41,22 +56,26 @@ class PriorityQueues {
 
     static void printJobs() {
         int currentPtr = front;
-        System.out.println();
-        do {
+        while (link[currentPtr] != -1) {
             System.out.print(priority[currentPtr] + ": " + data[currentPtr] + " -> ");
             currentPtr = link[currentPtr];
-        } while (link[currentPtr] != -1);
+        }
         System.out.print(priority[rear] + ": " + data[rear]);
     }
 
     static int getNode() {
-        int node = storage[0];
-        for(int i = 0; i + 1 < max; i++) {
-            storage[i] = storage[i + 1];
-        }
-        storage[max - 1] = -1;
+        if(storage[0] == -1) {
+            System.out.println("No more nodes!");
+            return -1;
+        } else {
+            int node = storage[0];
+            for (int i = 0; i + 1 < max; i++) {
+                storage[i] = storage[i + 1];
+            }
+            storage[max - 1] = -1;
 
-        return node;
+            return node;
+        }
     }
 
     static void retNode(int node) {
@@ -71,7 +90,7 @@ class PriorityQueues {
         if(isFull()) {
             System.out.println("Queue is full.");
         } else {
-            int pointer = getNode() - 1;
+            int pointer = getNode();
             data[pointer] = description;
             priority[pointer] = priorityLvl;
             int currentPtr = front;
@@ -81,20 +100,20 @@ class PriorityQueues {
                 link[front] = -1;
                 rear = pointer;
             } else {
-                int nextPtr = link[currentPtr];
+                int start = link[currentPtr];
 
                 if (priorityLvl >= priority[currentPtr]) {
-                    while (nextPtr != -1 && priorityLvl >= priority[nextPtr]) {
+                    while (start != -1 && priorityLvl >= priority[start]) {
                         currentPtr = link[currentPtr];
-                        nextPtr = link[currentPtr];
+                        start = link[currentPtr];
                     }
 
-                    if (nextPtr == -1) {
+                    if (start == -1) {
                         link[currentPtr] = pointer;
                         link[pointer] = -1;
                         rear = pointer;
                     } else {
-                        link[pointer] = nextPtr;
+                        link[pointer] = start;
                         link[currentPtr] = pointer;
                     }
 
@@ -106,25 +125,13 @@ class PriorityQueues {
         }
     }
 
-    static void removeFrom(int position) {
-        int index = 1;
-
-        int pointer = front + 1;
-
-        if(position == 0) {
-            front = link[front];
-            retNode(pointer);
+    static void remove() {
+        if(isEmpty()) {
+            System.out.println("Queue is empty.");
         } else {
-            while(index != position) {
-                rear = pointer;
-                pointer = link[pointer];
-                index++;
-            }
-            retNode(pointer);
-            if(pointer == 0) {
-                link[rear] = -1;
-            } else {
-                link[rear] = link[pointer];
+            if(link[front] != -1) {
+                front = link[front];
+                retNode(front);
             }
         }
     }

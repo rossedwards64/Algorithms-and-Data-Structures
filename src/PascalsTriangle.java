@@ -2,6 +2,11 @@ import java.util.Scanner;
 
 public class PascalsTriangle {
 
+    public static void main(String[] args) {
+        displayTriangleSolution1();
+        displayTriangleSolution2();
+    }
+
     static void displayTriangleSolution1() {
         Scanner scan = new Scanner(System.in);
         System.out.println("How many rows would you like to display?: ");
