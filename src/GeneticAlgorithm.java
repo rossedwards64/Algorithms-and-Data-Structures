@@ -1,6 +1,13 @@
 import java.util.ArrayList;
 import java.util.Random;
 
+// write every generation to csv file
+// change crossover rate, write that to another csv file
+// change mutation rate, write that to another csv file
+// append csv files to portfolio to cut down on space
+// create graphs with horizontal axis as generations and vertical axis as fitness levels
+// add a function that shows that the fitness values are being calculated correctly
+
 public class GeneticAlgorithm {
     static ArrayList<Double> dataset = new ArrayList<>();
     static double finalFitness = 0;
@@ -34,7 +41,7 @@ public class GeneticAlgorithm {
             double left = 0;
             double right = 0;
 
-            for(int i=0; i<size-1; i++) {
+            for(int i=0; i < size; i++) {
                 if(chromosome.get(i) == 0) {
                     left += dataset.get(i);
                 } else {
@@ -99,7 +106,7 @@ public class GeneticAlgorithm {
 
     public static void runGA() {
         //create a population object and parameters
-        int numGeneration = 10;
+        int numGeneration = 30;
         int popSize = 10;
         double crossOverRate = 0.6;
         double mutationRate = 0.3;
@@ -107,7 +114,7 @@ public class GeneticAlgorithm {
         //prepare dataset
         String file = "geneticSample.csv";
         dataset = Data.readFile(file);
-        double chromosomeSize = dataset.get(0);
+        double chromosomeSize = dataset.size();
 
         // initialise the population
         Population pop = new Population(popSize, chromosomeSize); // create 10 candidates, each candidates has 5 genes (5 nodes), pass dataset to calculate fitness
@@ -121,6 +128,8 @@ public class GeneticAlgorithm {
             // get the parents - top 2 from the list
             Individual p1 = pop.population.get(0);
             Individual p2 = pop.population.get(1);
+
+            // try getting the bottom 2 parents as well
 
             // get 2 new children
             Individual ch1 = pop.crossOver(p1, p2, crossOverRate);
@@ -142,6 +151,8 @@ public class GeneticAlgorithm {
             pop.population.remove(popSize);
             pop.population.remove(popSize);
             pop.population.remove(popSize);
+            String fileName = "C:\\Users\\redwa\\IdeaProjects\\Algorithms-and-Data-Structures\\result\\geneticResult" + gen + ".csv";
+            Data.writeResult(fileName, pop);
             pop.printPop();
         }
 

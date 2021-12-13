@@ -1,7 +1,4 @@
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.FileReader;
-import java.io.FileWriter;
+import java.io.*;
 import java.util.ArrayList;
 
 public class Data {
@@ -29,6 +26,7 @@ public class Data {
 
     public static void writeResult(String file, GeneticAlgorithm.Population result) {
         try {
+            new File("result").mkdirs();
             FileWriter fw = new FileWriter(file);
             BufferedWriter bw = new BufferedWriter (fw);
 
