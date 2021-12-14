@@ -12,12 +12,25 @@ class PriorityQueues {
         createQueue();
         init(8);
         insert("EEE", 4);
+        System.out.println();
+        printJobs();
         insert("GGG", 5);
+        System.out.println();
+        printJobs();
         insert("CCC", 2);
+        System.out.println();
+        printJobs();
         insert("DDD", 4);
+        System.out.println();
+        printJobs();
         insert("BBB", 2);
+        System.out.println();
+        printJobs();
         insert("FFF", 4);
+        System.out.println();
+        printJobs();
         insert("AAA", 1);
+        System.out.println();
         printJobs();
 
         remove();
@@ -79,10 +92,15 @@ class PriorityQueues {
     }
 
     static void retNode(int node) {
-        for(int i = max - 2; i >= 0; i--) {
-            storage[i + 1] = storage[i];
+        if(storage[max - 1] != -1) {
+            System.out.println(" \nStorage pool is full!.");
+        } else {
+            storage[0] = node;
+
+            for (int i = max - 2; i >= 0; i--) {
+                storage[i + 1] = storage[i];
+            }
         }
-        storage[0] = node;
     }
 
 

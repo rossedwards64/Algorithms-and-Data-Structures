@@ -114,7 +114,7 @@ public class GeneticAlgorithm {
     public static void runGA() {
         //create a population object and parameters
         int numGeneration = 30;
-        int popSize = 10;
+        int popSize = 25;
         double crossOverRate = 0.6;
         double mutationRate = 0.3;
 
