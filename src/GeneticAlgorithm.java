@@ -115,8 +115,8 @@ public class GeneticAlgorithm {
         //create a population object and parameters
         int numGeneration = 30;
         int popSize = 25;
-        double crossOverRate = 0.6;
-        double mutationRate = 0.3;
+        double crossOverRate = 0.9;
+        double mutationRate = 0.1;
 
         //prepare dataset
         String file = "geneticSample.csv";
@@ -153,12 +153,14 @@ public class GeneticAlgorithm {
 
             //sort them
             pop.population.sort(new CompareFitness()); //sorting the population by fitness (asc)
-
             // remove weakest links
             pop.population.remove(popSize);
             pop.population.remove(popSize);
             pop.population.remove(popSize);
-            String fileName = "C:\\Users\\redwa\\IdeaProjects\\Algorithms-and-Data-Structures\\result\\geneticResult" + gen + ".csv";
+
+            // desktop folder path: String fileName = "C:\\Users\\redwa\\Documents\\Uni Work\\Year 2\\Algorithms and Data Structures\\Assignment\\result\\geneticResult" + gen + ".csv";
+            // laptop folder path:
+            String fileName = "C:\\Users\\redwa\\Documents\\Uni Work\\Year 2\\Algorithms and Data Structures\\Assignment\\result\\geneticResult" + gen + ".csv";
             Data.writeResult(fileName, pop);
             pop.printPop();
         }

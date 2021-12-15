@@ -24,6 +24,13 @@
             </Attribute>
           </value>
         </entry>
+        <entry key="\meanFitness.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
         <entry key="\newData.csv">
           <value>
             <Attribute>

@@ -19,14 +19,14 @@ public class Data {
                 }
             }
         } catch(Exception e) {
-            System.err.println("Error");
+            System.err.println("Error reading");
         }
         return res;
     }
 
     public static void writeResult(String file, GeneticAlgorithm.Population result) {
         try {
-            new File("result").mkdirs();
+            //new File("result").mkdirs();
             FileWriter fw = new FileWriter(file);
             BufferedWriter bw = new BufferedWriter (fw);
 
@@ -43,7 +43,7 @@ public class Data {
             fw.close();
         }
         catch(Exception e) {
-            System.err.print("Error");
+            System.err.print("Error writing");
         }
     }
 }
