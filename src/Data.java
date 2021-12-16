@@ -26,7 +26,6 @@ public class Data {
 
     public static void writeResult(String file, GeneticAlgorithm.Population result) {
         try {
-            //new File("result").mkdirs();
             FileWriter fw = new FileWriter(file);
             BufferedWriter bw = new BufferedWriter (fw);
 
@@ -44,6 +43,29 @@ public class Data {
         }
         catch(Exception e) {
             System.err.print("Error writing");
+        }
+    }
+
+    public static void writeResult2(GeneticAlgorithm.Population result) {
+        double fitnessValue = 0;
+
+        try {
+            BufferedWriter writer = new BufferedWriter(new FileWriter("bestFitness.csv", true));
+            writer.write(Double.toString(result.population.get(0).fitness));
+            writer.newLine();
+            writer.close();
+
+            for(int i = 0; i < result.population.size(); i++) {
+                fitnessValue += result.population.get(i).fitness;
+            }
+
+            fitnessValue = fitnessValue / 10;
+            writer = new BufferedWriter(new FileWriter("meanFitness.csv", true));
+            writer.write(Double.toString(fitnessValue));
+            writer.newLine();
+            writer.close();
+        } catch(IOException e) {
+            System.out.println("Error");
         }
     }
 }

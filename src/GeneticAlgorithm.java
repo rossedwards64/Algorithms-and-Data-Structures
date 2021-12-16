@@ -10,6 +10,9 @@ import java.util.Random;
 // in excel, work out which numbers from geneticSample are 0 (left) or 1 (right), then work out the sum of the
 // 0 numbers and the sum of the 1 numbers
 
+// generate dataset of random doubles between 0 and 5
+// after that, run thousands of generations to create a graph
+
 public class GeneticAlgorithm {
     static ArrayList<Double> dataset = new ArrayList<>();
     static double finalFitness = 0;
@@ -18,18 +21,16 @@ public class GeneticAlgorithm {
         runGA();
     }
 
-    static class Individual{
+    static class Individual {
 
         public ArrayList<Integer> chromosome = new ArrayList<>();
         double fitness;
 
         public Individual(int n) {
             Random r = new Random();
-
             while(chromosome.size()<n) {
                 this.chromosome.add(r.nextInt(2));
             }
-
             setFitness();
         }
 
@@ -58,7 +59,7 @@ public class GeneticAlgorithm {
         }
     }
 
-    static class Population{
+    static class Population {
         public ArrayList<Individual> population = new ArrayList<>();
 
         public Population (int popSize, int chromosomeSize) {
@@ -160,8 +161,9 @@ public class GeneticAlgorithm {
 
             // desktop folder path: String fileName = "C:\\Users\\redwa\\Documents\\Uni Work\\Year 2\\Algorithms and Data Structures\\Assignment\\result\\geneticResult" + gen + ".csv";
             // laptop folder path:
-            String fileName = "C:\\Users\\redwa\\Documents\\Uni Work\\Year 2\\Algorithms and Data Structures\\Assignment\\result\\geneticResult" + gen + ".csv";
+            String fileName = "C:\\Users\\redwa\\IdeaProjects\\Algorithms-and-Data-Structures\\result\\geneticResult" + gen + ".csv";
             Data.writeResult(fileName, pop);
+            Data.writeResult2(pop);
             pop.printPop();
         }
 
