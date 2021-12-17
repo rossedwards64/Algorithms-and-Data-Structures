@@ -3,6 +3,13 @@
   <component name="CsvFileAttributes">
     <option name="attributeMap">
       <map>
+        <entry key="\FitnessGraphTables.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
         <entry key="\bestFitness.csv">
           <value>
             <Attribute>
@@ -46,13 +53,6 @@
           </value>
         </entry>
         <entry key="\newData.csv">
-          <value>
-            <Attribute>
-              <option name="separator" value="," />
-            </Attribute>
-          </value>
-        </entry>
-        <entry key="\newDataset.csv">
           <value>
             <Attribute>
               <option name="separator" value="," />
