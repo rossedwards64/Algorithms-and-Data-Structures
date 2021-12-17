@@ -59,7 +59,7 @@ public class Data {
                 fitnessValue += result.population.get(i).fitness;
             }
 
-            fitnessValue = fitnessValue / 10;
+            fitnessValue = fitnessValue / 50;
             writer = new BufferedWriter(new FileWriter("meanFitness.csv", true));
             writer.write(Double.toString(fitnessValue));
             writer.newLine();

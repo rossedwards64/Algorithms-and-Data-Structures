@@ -43,12 +43,12 @@ public class GeneticAlgorithm {
             double res;
             int size = chromosome.size();
 
-            double left = 0;
+            double left = 1;
             double right = 0;
 
             for(int i=0; i < size; i++) {
                 if(chromosome.get(i) == 0) {
-                    left += dataset.get(i);
+                    left *= dataset.get(i);
                 } else {
                     right += dataset.get(i);
                 }
@@ -114,13 +114,13 @@ public class GeneticAlgorithm {
 
     public static void runGA() {
         //create a population object and parameters
-        int numGeneration = 30;
-        int popSize = 25;
-        double crossOverRate = 0.9;
-        double mutationRate = 0.1;
+        int numGeneration = 100000;
+        int popSize = 1000;
+        double crossOverRate = 0.2;
+        double mutationRate = 0.7;
 
         //prepare dataset
-        String file = "geneticSample.csv";
+        String file = "myAlgoData.csv";
         dataset = Data.readFile(file);
         int chromosomeSize = dataset.size();
 
@@ -160,9 +160,9 @@ public class GeneticAlgorithm {
             pop.population.remove(popSize);
 
             // desktop folder path: String fileName = "C:\\Users\\redwa\\Documents\\Uni Work\\Year 2\\Algorithms and Data Structures\\Assignment\\result\\geneticResult" + gen + ".csv";
-            // laptop folder path:
-            String fileName = "C:\\Users\\redwa\\IdeaProjects\\Algorithms-and-Data-Structures\\result\\geneticResult" + gen + ".csv";
-            Data.writeResult(fileName, pop);
+            // laptop folder path: String fileName = "C:\\Users\\redwa\\IdeaProjects\\Algorithms-and-Data-Structures\\result\\geneticResult" + gen + ".csv";
+            //String fileName = "C:\\Users\\redwa\\Documents\\Uni Work\\Year 2\\Algorithms and Data Structures\\Assignment\\result\\geneticResult" + gen + ".csv";
+            //Data.writeResult(fileName, pop);
             Data.writeResult2(pop);
             pop.printPop();
         }
